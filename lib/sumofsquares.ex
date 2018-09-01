@@ -47,9 +47,9 @@ defmodule Sumofsquares do
   Returns a list of integers which indicate the starting sequence or an empty list if there are no sequences whose sum of squares is a perfect square
 
   ##Examples
-    iex> Sumofsquares.with_distribution(3,2)
+    iex> Sumofsquares.without_distribution(3,2)
     [3]
-    iex> Sumofsquares.with_distribution(40,24)
+    iex> Sumofsquares.without_distribution(40,24)
     [1,9,20,25]
   """
   def without_distribution(n,k) do
