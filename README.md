@@ -3,25 +3,30 @@
 Check whether sum of squares of sequence of numbers is a perfect square using actor
 model
 
-## Installation
-
-If [available in Hex](https://hex.pm/docs/publish), the package can be installed
-by adding `sumofsquares` to your list of dependencies in `mix.exs`:
-
-```elixir
-def deps do
-  [
-    {:sumofsquares, "~> 0.1.0"}
-  ]
-end
-```
-
 ### Execution
+
+Compile the program using mix
 
 ```elixir
 bash> mix compile
+```
+
+Start the elixir interpreter with the module loaded in
+```elixir
 bash> iex -S mix
+```
+
+Check the execution of module
+```elixir
 iex> Sumofsquares.with_distribution(3, 2)
+```
+
+### Tests
+
+Run tests using the following command
+
+```elixir
+bash> mix test
 ```
 
 Documentation can be generated with [ExDoc](https://github.com/elixir-lang/ex_doc)
