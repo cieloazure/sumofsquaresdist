@@ -60,32 +60,30 @@ defmodule Sumofsquares.Boss do
     IO.puts "in handle cast..."
     limit = n
     sequence_length = k
-    {refs, next_subproblem_index} = spawn_workers(refs, next_subproblem_index, results, limit, sequence_length)
-    {:noreply, {refs,  results, next_subproblem_index, limit, sequence_length}}
+    {refs, next_subproblem_index} = spawn_workers(refs, results, next_subproblem_index, limit, sequence_length)
+    {:noreply, {refs, results, next_subproblem_index, limit, sequence_length}}
   end
 
-  def handle_info({:DOWN, ref, :process, _pid, _reason}, {refs,  results, next_subproblem_index, limit, sequence_length}) do
+  def handle_info({:DOWN, ref, :process, _pid, _reason}, {refs, results, next_subproblem_index, limit, sequence_length}) do
     IO.puts "Got down message from a process, Processing next subproblem....."
-    IO.puts next_subproblem_index
     {_v, refs} = Map.pop(refs, ref)
-    {refs, next_subproblem_index} = spawn_workers(refs, next_subproblem_index, results, limit, sequence_length)
-    {:noreply, {refs, next_subproblem_index, results, limit, sequence_length}}
+    {refs, next_subproblem_index} = spawn_workers(refs, results, next_subproblem_index, limit, sequence_length)
+    {:noreply, {refs, results, next_subproblem_index, limit, sequence_length}}
   end
 
   def handle_info(_msg, state) do
     {:noreply, state}
   end
 
-  defp spawn_workers(refs, next_subproblem_index, results, limit, sequence_length) do
+  defp spawn_workers(refs, results, next_subproblem_index, limit, sequence_length) do
     IO.puts "in spawn_workers!"
     if map_size(refs) < @num_workers && next_subproblem_index <= limit do
       IO.puts "spawing a worker..." 
-      IO.puts next_subproblem_index
       pid = Process.spawn(Sumofsquares.SubproblemWorker, :solve, [next_subproblem_index, next_subproblem_index + @subproblem_size - 1, sequence_length, results], [])
       ref = Process.monitor(pid)
       refs = Map.put(refs, ref, pid)
       next_subproblem_index = next_subproblem_index + @subproblem_size
-      spawn_workers(refs, next_subproblem_index, results, limit, sequence_length)
+      spawn_workers(refs, results, next_subproblem_index, limit, sequence_length)
     else
       IO.puts "No more free workers available or no more subproblems remaining"
       {refs, next_subproblem_index}
