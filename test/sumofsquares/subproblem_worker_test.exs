@@ -6,7 +6,9 @@ defmodule Sumofsquares.SubproblemWorkerTest do
     %{result: result}
   end
 
-  test "should update the state of the agent with the correct solution to the subproblem", %{result: result} do
+  test "should update the state of the agent with the correct solution to the subproblem", %{
+    result: result
+  } do
     Sumofsquares.SubproblemWorker.solve(1, 40, 24, result)
     assert Sumofsquares.Result.get_result(result) == [1, 9, 20, 25]
   end

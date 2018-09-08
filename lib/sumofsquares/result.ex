@@ -1,4 +1,4 @@
-defmodule Sumofsquares.Result do 
+defmodule Sumofsquares.Result do
   @moduledoc """
   An agent to maintain the state of the results calculated by the subworkers
   The state is a list which stores the elements

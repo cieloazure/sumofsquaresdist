@@ -18,7 +18,7 @@ bash> iex -S mix
 
 Check the execution of module
 ```elixir
-iex> Sumofsquares.with_distribution(3, 2)
+iex> Sumofsquares.Boss.calculate(Sumofsquares.Boss, 1000000, 24)
 ```
 
 ### Tests

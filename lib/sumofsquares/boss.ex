@@ -110,9 +110,14 @@ defmodule Sumofsquares.Boss do
 
   Returns the state of the result agent
   """
-  def handle_call({:result}, _from, {refs, results, next_subproblem_index, limit, sequence_length}) do
+  def handle_call(
+        {:result},
+        _from,
+        {refs, results, next_subproblem_index, limit, sequence_length}
+      ) do
     # IO.puts "in handle_call...."
-    {:reply, Sumofsquares.Result.get_result(results), {refs, results, next_subproblem_index, limit, sequence_length}}
+    {:reply, Sumofsquares.Result.get_result(results),
+     {refs, results, next_subproblem_index, limit, sequence_length}}
   end
 
   @doc """
@@ -122,10 +127,13 @@ defmodule Sumofsquares.Boss do
   concurrently by spawning multiple workers and monitoring their processes
   """
   def handle_cast({:solve, n, k}, {refs, results, next_subproblem_index, limit, sequence_length}) do
-    IO.puts "in handle cast..."
+    IO.puts("in handle cast...")
     limit = n
     sequence_length = k
-    {refs, next_subproblem_index} = spawn_workers(refs, results, next_subproblem_index, limit, sequence_length)
+
+    {refs, next_subproblem_index} =
+      spawn_workers(refs, results, next_subproblem_index, limit, sequence_length)
+
     {:noreply, {refs, results, next_subproblem_index, limit, sequence_length}}
   end
 
@@ -136,18 +144,24 @@ defmodule Sumofsquares.Boss do
 
   This callback  will remove the process from the state of refs then will spawn additional workers if the problem is not yet solved
   """
-  def handle_info({:DOWN, ref, :process, _pid, _reason}, {refs, results, next_subproblem_index, limit, sequence_length}) do
+  def handle_info(
+        {:DOWN, ref, :process, _pid, _reason},
+        {refs, results, next_subproblem_index, limit, sequence_length}
+      ) do
     cont = {}
-    IO.puts "Got down message from a process....."
+    IO.puts("Got down message from a process.....")
     {_v, refs} = Map.pop(refs, ref)
-    IO.puts ">>Map size in handle_info"
-    IO.inspect map_size(refs)
-    IO.puts ">>From handle_info: Subproblem index in handle_info"
-    IO.inspect next_subproblem_index
-    {refs, next_subproblem_index} = spawn_workers(refs, results, next_subproblem_index, limit, sequence_length)
+    IO.puts(">>Map size in handle_info")
+    IO.inspect(map_size(refs))
+    IO.puts(">>From handle_info: Subproblem index in handle_info")
+    IO.inspect(next_subproblem_index)
+
+    {refs, next_subproblem_index} =
+      spawn_workers(refs, results, next_subproblem_index, limit, sequence_length)
+
     cont = if next_subproblem_index > limit && map_size(refs) == 0, do: {:continue, :get_results}
-    IO.puts ">> From handle_info: value of cont"
-    IO.inspect cont
+    IO.puts(">> From handle_info: value of cont")
+    IO.inspect(cont)
     {:noreply, {refs, results, next_subproblem_index, limit, sequence_length}, cont}
   end
 
@@ -166,9 +180,12 @@ defmodule Sumofsquares.Boss do
   Initiation of this callback signifies that there are no more subproblem to be solved
   and results are ready to be returned
   """
-  def handle_continue(:get_results, {_refs, results, _next_subproblem_index, _limit, _sequence_length} = state ) do
-    IO.puts "Got to continue....Sending the results"
-    IO.inspect Sumofsquares.Result.get_result(results)
+  def handle_continue(
+        :get_results,
+        {_refs, results, _next_subproblem_index, _limit, _sequence_length} = state
+      ) do
+    IO.puts("Got to continue....Sending the results")
+    IO.inspect(Sumofsquares.Result.get_result(results))
     {:noreply, state}
   end
 
@@ -177,20 +194,34 @@ defmodule Sumofsquares.Boss do
   # If the conditions above are met it will spawn a worker, update the state of
   # refs to indicate there is worker and also update the state of next_subproblem_index
   defp spawn_workers(refs, results, next_subproblem_index, limit, sequence_length) do
-    IO.puts "in spawn_workers!"
-    IO.puts ">>Ref size in spawn workers"
-    IO.inspect map_size(refs)
-    IO.puts ">>Subproblem index in spawn workers"
-    IO.inspect next_subproblem_index
+    IO.puts("in spawn_workers!")
+    IO.puts(">>Ref size in spawn workers")
+    IO.inspect(map_size(refs))
+    IO.puts(">>Subproblem index in spawn workers")
+    IO.inspect(next_subproblem_index)
+
     if next_subproblem_index < limit and map_size(refs) < @num_workers do
-      IO.puts "spawing a worker..."
-      pid = Process.spawn(Sumofsquares.SubproblemWorker, :solve, [next_subproblem_index, min(next_subproblem_index + @subproblem_size - 1, limit), sequence_length, results], [])
+      IO.puts("spawing a worker...")
+
+      pid =
+        Process.spawn(
+          Sumofsquares.SubproblemWorker,
+          :solve,
+          [
+            next_subproblem_index,
+            min(next_subproblem_index + @subproblem_size - 1, limit),
+            sequence_length,
+            results
+          ],
+          []
+        )
+
       ref = Process.monitor(pid)
       refs = Map.put(refs, ref, pid)
       next_subproblem_index = min(next_subproblem_index + @subproblem_size, limit + 1)
       spawn_workers(refs, results, next_subproblem_index, limit, sequence_length)
     else
-      IO.puts "No more free workers available or no more subproblems remaining"
+      IO.puts("No more free workers available or no more subproblems remaining")
       {refs, next_subproblem_index}
     end
   end

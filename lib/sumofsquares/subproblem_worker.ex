@@ -20,8 +20,10 @@ defmodule Sumofsquares.SubproblemWorker do
   iex> Sumofsquares.SubproblemWorker.solve(1, 40, 24, results)
   """
   def solve(lb, ub, k, agent) do
-    sol = Enum.map(lb..ub, fn num -> solve_unit_problem(num, num + k - 1) end)
-    |> Enum.filter(fn num -> !is_nil(num) end)
+    sol =
+      Enum.map(lb..ub, fn num -> solve_unit_problem(num, num + k - 1) end)
+      |> Enum.filter(fn num -> !is_nil(num) end)
+
     if !is_nil(sol), do: Sumofsquares.Result.put_bulk(agent, sol)
   end
 
