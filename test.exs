@@ -1,4 +1,2 @@
-defmodule A do
-  def loop_acceptor do
-  end
-end
+{:ok, boss} = Sumofsquares.Boss.start_link([])
+:ok = Sumofsquares.Boss.calculate(boss, 6000000, 24)

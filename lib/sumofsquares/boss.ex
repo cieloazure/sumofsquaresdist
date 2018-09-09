@@ -18,13 +18,13 @@ defmodule Sumofsquares.Boss do
   # TODO: Find optimal number of workers
   # TODO: Check if the constant can be moved to runtime
   # Constant
-  @num_workers 10
+  @num_workers 50
 
   # Subproblem size for each worker
   # TODO: Find optimal subproblem size
   # TODO: Check if the constant can be moved to runtime
   # Constant
-  @subproblem_size 100
+  @subproblem_size 1000
 
   # Start of Client API
 
@@ -164,7 +164,11 @@ defmodule Sumofsquares.Boss do
 
     cont = if next_subproblem_index > limit && map_size(refs) == 0, do: {:continue, :get_results}
     Logger.debug(fn -> "In handle_info: Value of cont is " <> inspect(cont) end)
-    {:noreply, {refs, results, next_subproblem_index, limit, sequence_length}, cont}
+    if !is_nil(cont) do
+      {:noreply, {refs, results, next_subproblem_index, limit, sequence_length}, cont}
+    else
+      {:noreply, {refs, results, next_subproblem_index, limit, sequence_length}}
+    end
   end
 
   # TODO: Define behaviour for messages other than `:DOWN`
@@ -189,6 +193,7 @@ defmodule Sumofsquares.Boss do
       ) do
     Logger.info("Got to continue....Sending the results")
     Logger.debug(fn -> inspect(Sumofsquares.Result.get_result(results)) end)
+    IO.inspect(Sumofsquares.Result.get_result(results))
     {:noreply, state}
   end
 
