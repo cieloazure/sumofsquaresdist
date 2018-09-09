@@ -149,7 +149,6 @@ defmodule Sumofsquares.Boss do
         {:DOWN, ref, :process, _pid, _reason},
         {refs, results, next_subproblem_index, limit, sequence_length}
       ) do
-    cont = {}
     Logger.info("In handle_info: Got down message from a process.....")
     {_v, refs} = Map.pop(refs, ref)
 
@@ -194,7 +193,11 @@ defmodule Sumofsquares.Boss do
       ) do
     Logger.info("Got to continue....Sending the results")
     Logger.debug(fn -> inspect(Sumofsquares.Result.get_result(results)) end)
-    IO.inspect(Sumofsquares.Result.get_result(results))
+    str_concat = fn s -> s <> "\nPress <Ctrl-C> to exit" end
+    Enum.sort(Sumofsquares.Result.get_result(results))
+    |> Enum.join("\n") 
+    |> str_concat.()
+    |> IO.puts
     {:noreply, state}
   end
 
@@ -210,7 +213,7 @@ defmodule Sumofsquares.Boss do
       "In spawn_workers: Next subproblem index is " <> inspect(next_subproblem_index)
     end)
 
-    {refs, next_subproblem_index} =
+    {_refs, _next_subproblem_index} =
       if next_subproblem_index < limit and map_size(refs) < @num_workers do
         Logger.info("In spawn_workers: spawing a worker...")
 

@@ -3,30 +3,25 @@
 Check whether sum of squares of sequence of numbers is a perfect square using actor
 model
 
+### Compilation 
+
+```elixir
+mix compile
+```
+
 ### Execution
 
-Compile the program using mix
-
 ```elixir
-bash> mix compile
+mix run proj1.exs --no-halt <limit> <sequence_length>
 ```
-
-Start the elixir interpreter with the module loaded in
-```elixir
-bash> iex -S mix
-```
-
-Check the execution of module
-```elixir
-iex> Sumofsquares.Boss.calculate(Sumofsquares.Boss, 1000000, 24)
-```
+Usage: mix run proj1.exs --no-halt <limit:int()> <sequence_length:int()>"
 
 ### Tests
 
 Run tests using the following command
 
 ```elixir
-bash> mix test
+mix test
 ```
 
 Documentation can be generated with [ExDoc](https://github.com/elixir-lang/ex_doc)
