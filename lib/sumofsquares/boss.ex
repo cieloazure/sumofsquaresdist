@@ -164,6 +164,7 @@ defmodule Sumofsquares.Boss do
 
     cont = if next_subproblem_index > limit && map_size(refs) == 0, do: {:continue, :get_results}
     Logger.debug(fn -> "In handle_info: Value of cont is " <> inspect(cont) end)
+
     if !is_nil(cont) do
       {:noreply, {refs, results, next_subproblem_index, limit, sequence_length}, cont}
     else
