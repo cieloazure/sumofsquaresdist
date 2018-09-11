@@ -110,6 +110,7 @@ defmodule Sumofsquares.Boss do
 
     if Enum.all?(w, fn worker -> elem(worker, 2) == :idle end) and next_subproblem_index > limit  do
       IO.inspect Sumofsquares.Result.get_result(results)
+      System.stop(0)
     end
 
     {:noreply, {workers, results, next_subproblem_index, limit, sequence_length}}
