@@ -2,20 +2,6 @@ defmodule Sumofsquares.SubproblemWorkerTest do
   use ExUnit.Case
 
   setup do
-    {:ok, result} = Sumofsquares.Result.start_link([])
-    %{result: result}
-  end
-
-  test "should update the state of the agent with the correct solution to the subproblem", %{
-    result: result
-  } do
-    Sumofsquares.SubproblemWorker.solve(1, 40, 24, result)
-    assert Sumofsquares.Result.get_result(result) == [1, 9, 20, 25]
-  end
-
-  test "should not update the state of the agent if there is no solution", %{result: result} do
-    Sumofsquares.SubproblemWorker.solve(1, 40, 25, result)
-    assert Sumofsquares.Result.get_result(result) == []
   end
 
   @tag :pending
@@ -31,6 +17,22 @@ defmodule Sumofsquares.SubproblemWorkerTest do
   end
 
   @tag :pending
-  test "when agent is not valid instance" do
+  test "when agent is not valid instance of Sumofsquares.Result" do
+  end
+
+  @tag :pending
+  test "when caller is not a valid instance of pid" do
+  end
+
+  @tag :pending
+  test "the worker loops and checks for messages of the subproblem" do
+  end
+
+  @tag :pending
+  test "the worker discards invalid messages" do
+  end
+
+  @tag :pending
+  test "the worker doesn't die after the solution of the subproblem" do
   end
 end

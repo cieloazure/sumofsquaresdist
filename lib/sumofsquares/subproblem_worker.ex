@@ -10,6 +10,14 @@ defmodule Sumofsquares.SubproblemWorker do
   # TODO: Pass a function instead of an agent to update the state in order to
   # decouple the behaviour
 
+  @doc """
+  A function to keep receiving request for subproblems
+
+  It accepts the caller's pid as argument
+  ##Example
+  iex> {:ok, boss} = Sumofsquares.Boss.start_link(name: Boss)
+  iex> Sumofsquares.SubproblemWorker.loop_acceptor(boss)
+  """
   def loop_acceptor(caller) do
     receive do
       {:solve_new_subproblem, lb, ub, k, agent} -> solve(lb, ub, k, agent, caller)
@@ -20,11 +28,11 @@ defmodule Sumofsquares.SubproblemWorker do
   @doc """
   A function to compute the solution to the sum of squares problem
 
-  Accepts lower bound, upper bound, sequence length and an agent to return the results as parameters
+  Accepts lower bound, upper bound, sequence length, an agent to return results and a calling process to inform of its completed execution as parameters
   Returns `nil`
   ##Example
   iex> result = Sumofsquares.Result.start_link([])
-  iex> Sumofsquares.SubproblemWorker.solve(1, 40, 24, results)
+  iex> Sumofsquares.SubproblemWorker.solve(1, 40, 24, results, caller)
   """
   def solve(lb, ub, k, agent, caller) do
     sol =
@@ -39,6 +47,8 @@ defmodule Sumofsquares.SubproblemWorker do
   A function to specify the child process specifications to the supervisor
 
   Useful in case of starting a worker under a supervisor
+
+  Not used
   """
   def child_spec([lb, ub, k]) do
     %{

@@ -9,6 +9,14 @@ defmodule Sumofsquares.BossTest do
     @tag :pending
     test "will initialize the state of the boss" do
     end
+
+    @tag :pending
+    test "will spawn worker processes waiting for input" do
+    end
+
+    @tag :pending
+    test "ets table of process will say :idle initially" do
+    end
   end
 
   describe "concurrency of the boss" do
@@ -21,7 +29,7 @@ defmodule Sumofsquares.BossTest do
     end
 
     @tag :pending
-    test "the ratio of CPU time to real time is close to 1" do
+    test "the ratio of CPU time to real time greater than 1" do
     end
   end
 
@@ -41,27 +49,23 @@ defmodule Sumofsquares.BossTest do
 
   describe "logic of the boss" do
     @tag :pending
+    test "after the worker has finished solving the subproblem it's entry changes to :busy" do
+    end
+
+    @tag :pending
+    test "after the worker has finished solving the subproblem it's entry changes to :busy and it is given another problem to solve if there are problems remaining" do
+    end
+
+    @tag :pending
+    test "after the worker has finished solving the subproblem it's entry changes to :busy and it is not given another problem to solve if there are no problems remaining" do
+    end
+
+    @tag :pending
+    test "after all sub problems have been solved it returns the results" do
+    end
+    
+    @tag :pending
     test "if next_subproblem_index + @subproblem_size > limit it should increment only till limit" do
-    end
-
-    @tag :pending
-    test "when a down message is receive the entry from refs is removed" do
-    end
-
-    @tag :pending
-    test "when a down message is received and there is space in the free workers and there are still subproblems to be solved" do
-    end
-
-    @tag :pending
-    test "when a down message is receieved and there is space in the free workers and no more subproblems to be solved" do
-    end
-
-    @tag :pending
-    test "when a down message is received and there is no space in the free workers and subproblems still to be solved" do
-    end
-
-    @tag :pending
-    test "when a continue message is received the process will return the results" do
     end
   end
 end
