@@ -198,7 +198,7 @@ defmodule Sumofsquares.Boss do
     |> Enum.join("\n") 
     |> str_concat.()
     |> IO.puts
-    {:noreply, state}
+    System.stop(0)
   end
 
   # A private function to spawn wokers
