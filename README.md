@@ -53,9 +53,16 @@ mix run --no-halt proj1.exs  100000000 24
 ```bash
 /usr/bin/time -l mix run --no-halt 100000000 24
 ```
+```
+real 2m29.682s
+user 19m29.562s
+sys 0m3.081s
+```
+CPU time: real time = 7.81
 
 ### Results
 
+#### Dual core
 ```elixir
 mix run --no-halt proj1.exs   10000000 24
 ```
@@ -140,6 +147,45 @@ mix run --no-halt proj1.exs   10000000 24
      19912  involuntary context switches
 ```
 CPU time : real time = (10.99 + 0.32)/4.63 = 2.44
+
+
+#### Quad core
+
+```
+1
+9
+20
+25
+44
+76
+121
+197
+304
+353
+540
+856
+1301
+2053
+3112
+3597
+5448
+8576
+12981
+20425
+30908
+35709
+54032
+84996
+128601
+202289
+306060
+468037
+real    0m2.343s
+user    0m7.140s
+sys     0m0.160s
+```
+
+CPU time:real time = 3.06
 ### Documentation
 
 Documentation can be generated with [ExDoc](https://github.com/elixir-lang/ex_doc)
