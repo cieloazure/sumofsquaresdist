@@ -3,12 +3,12 @@
 Check whether sum of squares of sequence of numbers is a perfect square using actor
 model
 
-###Group Info
+### Group Info
 Pulkit Tripathi (UFID: 9751-9461)
 Akash Shingte (UFID: 4874-1966)
 
 
-##Instructions
+## Instructions
 
 ### Dependencies
 
@@ -53,13 +53,13 @@ mix run --no-halt proj1.exs  100000000 24
 mix run --no-halt proj1.exs   10000000 24
 ```
 
-####TODO: add output
+#### TODO: add output
 
 ```bash
 /usr/bin/time -l mix run --no-halt <limit> <sequence_length>
 ```
 
-####TODO: add output
+#### TODO: add output
 
 
 
