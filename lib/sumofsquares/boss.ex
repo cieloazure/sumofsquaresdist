@@ -126,7 +126,10 @@ defmodule Sumofsquares.Boss do
     w = :ets.match_object(workers, {:_, :_, :_})
 
     if Enum.all?(w, fn worker -> elem(worker, 2) == :idle end) and next_subproblem_index > limit do
-      IO.inspect(Enum.sort(Sumofsquares.Result.get_result(results)))
+      Enum.sort(Sumofsquares.Result.get_result(results))
+      |> Enum.join("\n")
+      |> IO.puts
+      
       System.stop(0)
     end
 
