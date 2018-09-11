@@ -59,7 +59,6 @@ mix run --no-halt proj1.exs  100000000 24
 ```elixir
 mix run --no-halt proj1.exs   10000000 24
 ```
-<<<<<<< HEAD
 1
 9
 20
@@ -88,15 +87,13 @@ mix run --no-halt proj1.exs   10000000 24
 202289
 306060
 468037
-=======
-
-#### TODO: add output
+```
 
 ```bash
 /usr/bin/time -l mix run --no-halt 1000000 24
 ```
 
-####TODO: add output
+```
 1
 9
 20
@@ -140,7 +137,7 @@ mix run --no-halt proj1.exs   10000000 24
          8  signals received
       2041  voluntary context switches
      19912  involuntary context switches
-
+```
 
 
 ### Documentation
