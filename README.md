@@ -91,13 +91,11 @@ mix run --no-halt proj1.exs   10000000 24
 =======
 
 #### TODO: add output
->>>>>>> fa4b869f8385c38ad6b8c394160db222805da734
 
 ```bash
 /usr/bin/time -l mix run --no-halt 1000000 24
 ```
 
-<<<<<<< HEAD
 ####TODO: add output
 1
 9
@@ -146,13 +144,7 @@ mix run --no-halt proj1.exs   10000000 24
 
 
 ### Documentation
-=======
-#### TODO: add output
 
-
-
-
->>>>>>> fa4b869f8385c38ad6b8c394160db222805da734
 Documentation can be generated with [ExDoc](https://github.com/elixir-lang/ex_doc)
 and published on [HexDocs](https://hexdocs.pm). Once published, the docs can
 be found at [https://hexdocs.pm/sumofsquares](https://hexdocs.pm/sumofsquares).
