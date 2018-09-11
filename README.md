@@ -59,6 +59,7 @@ mix run --no-halt proj1.exs  100000000 24
 ```elixir
 mix run --no-halt proj1.exs   10000000 24
 ```
+```
 1
 9
 20
@@ -89,7 +90,7 @@ mix run --no-halt proj1.exs   10000000 24
 468037
 ```
 
-```bash
+```
 /usr/bin/time -l mix run --no-halt 1000000 24
 ```
 
