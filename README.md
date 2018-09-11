@@ -3,12 +3,12 @@
 Check whether sum of squares of sequence of numbers is a perfect square using actor
 model
 
-###Group Info
+### Group Info
 Pulkit Tripathi (UFID: 9751-9461)
 Akash Shingte (UFID: 4874-1966)
 
 
-##Instructions
+## Instructions
 
 ### Dependencies
 
@@ -59,6 +59,7 @@ mix run --no-halt proj1.exs  100000000 24
 ```elixir
 mix run --no-halt proj1.exs   10000000 24
 ```
+<<<<<<< HEAD
 1
 9
 20
@@ -87,11 +88,16 @@ mix run --no-halt proj1.exs   10000000 24
 202289
 306060
 468037
+=======
+
+#### TODO: add output
+>>>>>>> fa4b869f8385c38ad6b8c394160db222805da734
 
 ```bash
 /usr/bin/time -l mix run --no-halt 1000000 24
 ```
 
+<<<<<<< HEAD
 ####TODO: add output
 1
 9
@@ -140,6 +146,13 @@ mix run --no-halt proj1.exs   10000000 24
 
 
 ### Documentation
+=======
+#### TODO: add output
+
+
+
+
+>>>>>>> fa4b869f8385c38ad6b8c394160db222805da734
 Documentation can be generated with [ExDoc](https://github.com/elixir-lang/ex_doc)
 and published on [HexDocs](https://hexdocs.pm). Once published, the docs can
 be found at [https://hexdocs.pm/sumofsquares](https://hexdocs.pm/sumofsquares).
