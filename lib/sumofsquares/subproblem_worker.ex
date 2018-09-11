@@ -22,6 +22,7 @@ defmodule Sumofsquares.SubproblemWorker do
     receive do
       {:solve_new_subproblem, lb, ub, k, agent} -> solve(lb, ub, k, agent, caller)
     end
+
     loop_acceptor(caller)
   end
 

@@ -25,7 +25,7 @@ defmodule Sumofsquares.Boss do
   # TODO: Find optimal subproblem size
   # TODO: Check if the constant can be moved to runtime
   # Constant
-  @subproblem_size 100000
+  @subproblem_size 100_000
 
   # Start of Client API
 
@@ -67,7 +67,7 @@ defmodule Sumofsquares.Boss do
   Returns a tuple containing the state
   """
   def init(:ok) do
-    #workers table
+    # workers table
     workers = :ets.new(:workers, [:set, :protected])
 
     # Next  subproblem to be solved
@@ -94,8 +94,13 @@ defmodule Sumofsquares.Boss do
 
   This callback is responsible for distributing the subproblems among workers
   """
-  def handle_cast({:solve_v2, limit, sequence_length}, {workers, results, next_subproblem_index, _limit, _sequence_length}) do
-    {workers, results, next_subproblem_index} = distribute_subproblems(workers, results, next_subproblem_index, limit, sequence_length, nil)
+  def handle_cast(
+        {:solve_v2, limit, sequence_length},
+        {workers, results, next_subproblem_index, _limit, _sequence_length}
+      ) do
+    {workers, results, next_subproblem_index} =
+      distribute_subproblems(workers, results, next_subproblem_index, limit, sequence_length, nil)
+
     {:noreply, {workers, results, next_subproblem_index, limit, sequence_length}}
   end
 
@@ -104,32 +109,37 @@ defmodule Sumofsquares.Boss do
 
   This callback is also responsible for displaying the results and stopping the system
   """
-  def handle_info({:execution_complete, p}, {workers, results, next_subproblem_index, limit, sequence_length}) do
-    f = :ets.fun2ms(fn({ref, pid, _status}) when pid == p -> {ref, pid, :idle} end)
+  def handle_info(
+        {:execution_complete, p},
+        {workers, results, next_subproblem_index, limit, sequence_length}
+      ) do
+    f = :ets.fun2ms(fn {ref, pid, _status} when pid == p -> {ref, pid, :idle} end)
     :ets.select_replace(workers, f)
 
-    {workers, results, next_subproblem_index} = if next_subproblem_index < limit do
-      distribute_subproblems(workers, results, next_subproblem_index, limit, sequence_length, p)
-    else
-      {workers, results, next_subproblem_index}
-    end
+    {workers, results, next_subproblem_index} =
+      if next_subproblem_index < limit do
+        distribute_subproblems(workers, results, next_subproblem_index, limit, sequence_length, p)
+      else
+        {workers, results, next_subproblem_index}
+      end
 
     w = :ets.match_object(workers, {:_, :_, :_})
 
-    if Enum.all?(w, fn worker -> elem(worker, 2) == :idle end) and next_subproblem_index > limit  do
-      IO.inspect Sumofsquares.Result.get_result(results)
+    if Enum.all?(w, fn worker -> elem(worker, 2) == :idle end) and next_subproblem_index > limit do
+      IO.inspect(Sumofsquares.Result.get_result(results))
       System.stop(0)
     end
 
     {:noreply, {workers, results, next_subproblem_index, limit, sequence_length}}
   end
- 
+
   # End of Server Callbacks
 
   # Start of private functions
   # A private function to spawn workers and wait for subproblems
   defp spawn_subproblem_workers(workers) do
     current_worker_table_size = length(:ets.match_object(workers, {:_, :_, :_}))
+
     if current_worker_table_size < @num_workers do
       pid = Process.spawn(Sumofsquares.SubproblemWorker, :loop_acceptor, [self()], [])
       ref = Process.monitor(pid)
@@ -141,21 +151,29 @@ defmodule Sumofsquares.Boss do
   end
 
   # A private function to distribute subproblem among workers
-  defp distribute_subproblems(workers, results, next_subproblem_index, limit, sequence_length, pid) do
-    first_idle_worker= List.first(:ets.match_object(workers, {:_, :_, :idle}))
-    idle_worker =if !is_nil(first_idle_worker) do
-      pid || elem(first_idle_worker, 1)
-    else
-      nil
-    end
+  defp distribute_subproblems(
+         workers,
+         results,
+         next_subproblem_index,
+         limit,
+         sequence_length,
+         pid
+       ) do
+    first_idle_worker = List.first(:ets.match_object(workers, {:_, :_, :idle}))
 
+    idle_worker =
+      if !is_nil(first_idle_worker) do
+        pid || elem(first_idle_worker, 1)
+      else
+        nil
+      end
 
     if !is_nil(idle_worker) and next_subproblem_index < limit do
       lb = next_subproblem_index
       ub = min(next_subproblem_index + @subproblem_size - 1, limit)
-      send_new_subproblem(idle_worker, lb, ub, sequence_length, results) 
+      send_new_subproblem(idle_worker, lb, ub, sequence_length, results)
 
-      f = :ets.fun2ms(fn({ref, pid, _status}) when pid == idle_worker -> {ref, pid, :busy} end)
+      f = :ets.fun2ms(fn {ref, pid, _status} when pid == idle_worker -> {ref, pid, :busy} end)
       :ets.select_replace(workers, f)
 
       next_subproblem_index = min(next_subproblem_index + @subproblem_size, limit + 1)
@@ -169,5 +187,6 @@ defmodule Sumofsquares.Boss do
   defp send_new_subproblem(pid, lb, ub, k, agent) do
     send(pid, {:solve_new_subproblem, lb, ub, k, agent})
   end
+
   # End of private functions
 end

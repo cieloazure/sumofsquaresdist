@@ -63,7 +63,7 @@ defmodule Sumofsquares.BossTest do
     @tag :pending
     test "after all sub problems have been solved it returns the results" do
     end
-    
+
     @tag :pending
     test "if next_subproblem_index + @subproblem_size > limit it should increment only till limit" do
     end
