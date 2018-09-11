@@ -139,8 +139,7 @@ mix run --no-halt proj1.exs   10000000 24
       2041  voluntary context switches
      19912  involuntary context switches
 ```
-
-
+CPU time : real time = (10.99 + 0.32)/4.63 = 2.44
 ### Documentation
 
 Documentation can be generated with [ExDoc](https://github.com/elixir-lang/ex_doc)
