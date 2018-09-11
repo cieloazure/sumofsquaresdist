@@ -19,13 +19,13 @@ defmodule Sumofsquares.Boss do
   # TODO: Find optimal number of workers
   # TODO: Check if the constant can be moved to runtime
   # Constant
-  @num_workers 200
+  @num_workers System.schedulers_online
 
   # Subproblem size for each worker
   # TODO: Find optimal subproblem size
   # TODO: Check if the constant can be moved to runtime
   # Constant
-  @subproblem_size 100_000
+  @subproblem_size 1000
 
   # Start of Client API
 
