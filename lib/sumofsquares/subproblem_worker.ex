@@ -10,6 +10,13 @@ defmodule Sumofsquares.SubproblemWorker do
   # TODO: Pass a function instead of an agent to update the state in order to
   # decouple the behaviour
 
+  def loop_acceptor(caller) do
+    receive do
+      {:solve_new_subproblem, lb, ub, k, agent} -> solve(lb, ub, k, agent, caller)
+    end
+    loop_acceptor(caller)
+  end
+
   @doc """
   A function to compute the solution to the sum of squares problem
 
@@ -19,12 +26,13 @@ defmodule Sumofsquares.SubproblemWorker do
   iex> result = Sumofsquares.Result.start_link([])
   iex> Sumofsquares.SubproblemWorker.solve(1, 40, 24, results)
   """
-  def solve(lb, ub, k, agent) do
+  def solve(lb, ub, k, agent, caller) do
     sol =
       Enum.map(lb..ub, fn num -> solve_unit_problem(num, num + k - 1) end)
       |> Enum.filter(fn num -> !is_nil(num) end)
 
     if !is_nil(sol), do: Sumofsquares.Result.put_bulk(agent, sol)
+    send(caller, {:execution_complete, self()})
   end
 
   @doc """
