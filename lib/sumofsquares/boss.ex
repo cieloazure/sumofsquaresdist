@@ -179,6 +179,7 @@ defmodule Sumofsquares.Boss do
       f = :ets.fun2ms(fn {ref, pid, _status} when pid == idle_worker -> {ref, pid, :busy} end)
       :ets.select_replace(workers, f)
 
+
       next_subproblem_index = min(next_subproblem_index + @subproblem_size, limit + 1)
       distribute_subproblems(workers, results, next_subproblem_index, limit, sequence_length, nil)
     else
