@@ -1,3 +1,4 @@
+
 # The directory Mix will write compiled artifacts to.
 /_build/
 
@@ -26,5 +27,5 @@ sumofsquares-*.tar
 *.swp
 *.swo
 
-# Mix lock
+# Ignore
 mix.lock

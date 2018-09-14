@@ -4,7 +4,7 @@ try do
     raise ArgumentError
   end
   [limit, sequence_length] = Enum.map(System.argv, fn x -> String.to_integer(x) end)
-  Sumofsquares.Boss.calculate(Sumofsquares.Boss, limit, sequence_length)
+  Sumofsquares.Boss.calculate(limit, sequence_length)
 rescue
   _e in ArgumentError -> IO.puts usage_string
 end
