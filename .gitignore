@@ -25,3 +25,6 @@ sumofsquares-*.tar
 # Ignore vim swap files
 *.swp
 *.swo
+
+# Mix lock
+mix.lock
